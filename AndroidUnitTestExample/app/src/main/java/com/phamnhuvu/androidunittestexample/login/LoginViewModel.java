@@ -1,0 +1,65 @@
+package com.phamnhuvu.androidunittestexample.login;
+
+import android.arch.lifecycle.ViewModel;
+import android.util.Patterns;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import io.reactivex.Observable;
+
+public class LoginViewModel extends ViewModel {
+
+    enum Message {
+        EMPTY_EMAIL,
+        INVALID_EMAIL,
+        EMPTY_PASSWORD,
+        SHORT_PASSWORD
+    }
+
+    public Observable<Message> login(String email, String password) {
+        return Observable.create(emitter -> {
+            boolean complete = true;
+
+            Message messageEmail = checkEmail(email);
+            if (messageEmail != null) {
+                complete = false;
+                emitter.onNext(messageEmail);
+            }
+
+            Message messagePassword = checkPassword(password);
+            if (messagePassword != null) {
+                complete = false;
+                emitter.onNext(messagePassword);
+            }
+
+            if (complete) emitter.onComplete();
+        });
+    }
+
+    private boolean isInvalidEmail(String email) {
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        Matcher matcher = pattern.matcher(email);
+        return !matcher.matches();
+    }
+
+    private Message checkEmail(String email) {
+        Message result = null;
+        if (email.isEmpty()) {
+            result = Message.EMPTY_EMAIL;
+        } else if (isInvalidEmail(email)) {
+            result = Message.INVALID_EMAIL;
+        }
+        return result;
+    }
+
+    private Message checkPassword(String password) {
+        Message result = null;
+        if (password.isEmpty()) {
+            result = Message.EMPTY_PASSWORD;
+        } else if (password.length() < 6) {
+            result = Message.SHORT_PASSWORD;
+        }
+        return result;
+    }
+}
