@@ -17,17 +17,24 @@ public class LoginViewModel extends ViewModel {
         SHORT_PASSWORD
     }
 
+    private Observable<Message> obLogin;
+    private String email;
+    private String password;
+
     public Observable<Message> login(String email, String password) {
-        return Observable.create(emitter -> {
+        this.email = email;
+        this.password = password;
+
+        obLogin = obLogin != null? obLogin : Observable.create(emitter -> {
             boolean complete = true;
 
-            Message messageEmail = checkEmail(email);
+            Message messageEmail = checkEmail(this.email);
             if (messageEmail != null) {
                 complete = false;
                 emitter.onNext(messageEmail);
             }
 
-            Message messagePassword = checkPassword(password);
+            Message messagePassword = checkPassword(this.password);
             if (messagePassword != null) {
                 complete = false;
                 emitter.onNext(messagePassword);
@@ -35,6 +42,7 @@ public class LoginViewModel extends ViewModel {
 
             if (complete) emitter.onComplete();
         });
+        return obLogin;
     }
 
     private boolean isInvalidEmail(String email) {

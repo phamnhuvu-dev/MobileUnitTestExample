@@ -26,6 +26,8 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tfEmail.accessibilityIdentifier = "tfEmail"
+        tfPassword.accessibilityIdentifier = "tfPassword"
+        btnLogin.accessibilityIdentifier = "btnLogin"
         
         tfEmail.placeholder = "Email"
         tfPassword.placeholder = "Password"
@@ -64,7 +66,6 @@ class LoginViewController: UIViewController {
                     onCompleted: { () in
                         self.navigationController?.pushViewController(MainViewController(), animated: true)
                 }).disposed(by: self.disposeBag)
-            navigationController?.pushViewController(MainViewController(), animated: true)
         default:
             return
         }

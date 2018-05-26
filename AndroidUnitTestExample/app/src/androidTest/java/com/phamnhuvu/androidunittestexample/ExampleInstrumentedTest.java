@@ -51,7 +51,7 @@ public class ExampleInstrumentedTest {
     public void checkLogin(String typeEmail, String typePassword, String expectedEmail, String expectedPassword) {
         etEmail.perform(typeText(typeEmail));
         etPassword.perform(typeText(typePassword));
-        sleep(300);
+        sleep(200);
 
         btnLogin.perform(click());
         etEmail.check((view, noViewFoundException12) -> {
@@ -62,14 +62,14 @@ public class ExampleInstrumentedTest {
             String hint = ((EditText) view).getHint().toString();
             assertEquals("checkPassword", expectedPassword, hint);
         });
-        sleep(1500);
+        sleep(1000);
     }
 
     @Test
     public void checkLoginSuccess() {
         etEmail.perform(typeText("phamnhuvu.ou@gmail.com"));
         etPassword.perform(typeText("123456"));
-        sleep(300);
+        sleep(200);
         btnLogin.perform(click());
         sleep(500);
 
